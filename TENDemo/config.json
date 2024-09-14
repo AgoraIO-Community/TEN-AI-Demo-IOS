@@ -1,0 +1,13 @@
+{
+    "uid": 0,
+    "agentUid": 1234,
+    "remoteStreamId": 178120,
+    "channel": "",
+    "appId": "",
+    "rtcToken": "true",
+    "product": "ils",
+    "agoraAsrLanguage": "en-US",
+    "openaiProxyUrl": "",
+    "voiceType": "male",
+    "serverBaseURL":"https://astra.agoraguru.net"
+}
