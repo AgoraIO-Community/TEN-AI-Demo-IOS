@@ -3,7 +3,6 @@
 //  TENDemo
 //
 //  Created by Rick Cheng on 8/13/24.
-//  Original reference Docs-Examples
 //
 
 import AgoraRtcKit
@@ -43,10 +42,9 @@ open class AgoraManager: NSObject, ObservableObject {
     
     // MARK: - Agora Engine Functions
     private var engine: AgoraRtcEngineKit?
-    @State private var streamId = 0
+    @State private var streamId = 0   /// a handler id for data stream, to be assigned by rtc engine
     
-    private var currentSample : Int = 0
-    
+    private var currentSample : Int = 0  /// use for audio sampling
     
     public var agoraEngine: AgoraRtcEngineKit {
         if let engine { return engine }
@@ -67,77 +65,16 @@ open class AgoraManager: NSObject, ObservableObject {
         if result != 0 {
             print("ERROR, StreamCreate FAILED!")
         }
+        ///  Enable the capturing of raw audio frame for individual remote users
         eng.setAudioFrameDelegate(self)
-        // eng.setMixedAudioFrameParametersWithSampleRate(44100, channel: 1, samplesPerCall: 4410)
-        //eng.setPlaybackAudioFrameParametersWithSampleRate(44100, channel: 1, mode: .readWrite, samplesPerCall: 4410)
         eng.setPlaybackAudioFrameBeforeMixingParametersWithSampleRate(44100, channel: 1)
         return eng
     }
     
-    @discardableResult
-    open func startSession(withAI : Bool) async -> Int32 {
-        let channel = AppConfig.shared.channel
-        var token = AppConfig.shared.rtcToken;
-        
-        // if intended AppID is token-enable, then the config file should
-        // has one non empty entry (copied from console)
-        // We will use the server generated version to avoid manual entry
-        // from now on.
-        if (token != nil && token != "") {
-            do {
-                token = try await NetworkManager.ApiRequestToken()
-            } catch let error {
-                print("ApiRequestToken:\(error)")
-                return -1;
-            }
-        }
-        let uid = AppConfig.shared.remoteStreamId
-        var status : Int32 = 0
-        switch AppConfig.shared.product {
-        case .rtc:
-            status = await joinVideoCall(channel, token: token, uid: uid)
-        case .ils:
-            status = await joinBroadcastStream(
-                channel, token: token, uid: uid,
-                isBroadcaster: true
-            )
-        case .voice:
-            status = await joinVoiceCall(channel, token: token, uid: uid)
-        }
-        
-        if(status == 0 && withAI) {
-            do {
-                let _ = try await NetworkManager.ApiRequestStartService()
-            } catch let error {
-                print ("Error: \(error.localizedDescription)")
-                status = -2
-            }
-        }
-        return status
-    }
-
-    @discardableResult
-    open func stopSession() -> Int32 {
-        Task {
-            do {
-                let _ = try await NetworkManager.ApiRequestStopService()
-            } catch let error {
-                print ("Error: \(error.localizedDescription)")
-            }
-        }
-        return leaveChannel(leaveChannelBlock: nil, destroyInstance: false)
-    }
     
-    open func pingSession() -> Void {
-        Task {
-            do {
-                let _ = try await NetworkManager.ApiRequestPingService()
-            } catch let error {
-                print ("Error: \(error.localizedDescription)")
-            }
-        }
-    }
-    
+    /// Sends a text message using the data stream
+    /// - Parameters:
+    ///     - message:  The message string.
     open func sendMessage(message:String) -> Void {
         let sendResult = engine?.sendStreamMessage(streamId, data: Data(message.utf8))
         if sendResult != nil {
@@ -298,6 +235,73 @@ open class AgoraManager: NSObject, ObservableObject {
     }
 }
 
+/// Handling session logic with the TEN Server
+extension AgoraManager {
+    @discardableResult
+    public func startSession(withAI : Bool) async -> Int32 {
+        let channel = AppConfig.shared.channel
+        var token = AppConfig.shared.rtcToken;
+        
+        // if intended AppID is token-enable, then the config file should
+        // has one non empty entry (copied from console)
+        // We will use the server generated version to avoid manual entry
+        // from now on.
+        if (token != nil && token != "") {
+            do {
+                token = try await NetworkManager.ApiRequestToken()
+            } catch let error {
+                print("ApiRequestToken:\(error)")
+                return -1;
+            }
+        }
+        let uid = AppConfig.shared.remoteStreamId
+        var status : Int32 = 0
+        switch AppConfig.shared.product {
+        case .rtc:
+            status = await joinVideoCall(channel, token: token, uid: uid)
+        case .ils:
+            status = await joinBroadcastStream(
+                channel, token: token, uid: uid,
+                isBroadcaster: true
+            )
+        case .voice:
+            status = await joinVoiceCall(channel, token: token, uid: uid)
+        }
+        
+        if(status == 0 && withAI) {
+            do {
+                let _ = try await NetworkManager.ApiRequestStartService()
+            } catch let error {
+                print ("Error: \(error.localizedDescription)")
+                status = -2
+            }
+        }
+        return status
+    }
+    
+    @discardableResult
+    public func stopSession() -> Int32 {
+        Task {
+            do {
+                let _ = try await NetworkManager.ApiRequestStopService()
+            } catch let error {
+                print ("Error: \(error.localizedDescription)")
+            }
+        }
+        return leaveChannel(leaveChannelBlock: nil, destroyInstance: false)
+    }
+    
+    public func pingSession() -> Void {
+        Task {
+            do {
+                let _ = try await NetworkManager.ApiRequestPingService()
+            } catch let error {
+                print ("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+}
+
 // MARK: - Delegate Methods
 
 extension AgoraManager: AgoraRtcEngineDelegate {
@@ -344,6 +348,13 @@ extension AgoraManager: AgoraRtcEngineDelegate {
         self.userVideoPublishing.removeValue(forKey: uid)
     }
     
+    /// The delegate signals the change of video publishing state for the local user
+    ///  - Parameters:
+    ///     - engine: The Agora RTC engine kit object.
+    ///     - state: The state of the video streaming
+    ///     - reason: The reason why the user left the channel.
+    ///     - sourceType: the source of the video
+    ///
     open func rtcEngine(_ engine: AgoraRtcEngineKit, localVideoStateChangedOf state: AgoraVideoLocalState, reason: AgoraLocalVideoStreamReason, sourceType: AgoraVideoSourceType) {
         print("localVideoStateChangedOf: \(state) \(reason)")
         switch(state) {
@@ -360,7 +371,14 @@ extension AgoraManager: AgoraRtcEngineDelegate {
             break;
         }
      }
-    
+    /// The delegate signals the change of video publishing state for the remote user
+    ///  - Parameters:
+    ///     - engine: The Agora RTC engine kit object.
+    ///     - uid: the uid of the remote user
+    ///     - state: The state of the video streaming
+    ///     - reason: The reason why the user left the channel.
+    ///     - elapsed: time since joined
+    ///
     open func rtcEngine( _ engine: AgoraRtcEngineKit,
         remoteVideoStateChangedOfUid uid: UInt,
         state: AgoraVideoRemoteState,
@@ -380,18 +398,14 @@ extension AgoraManager: AgoraRtcEngineDelegate {
         }
     }
     
+    /// The delegate of receiving the data stream data
+    ///   - Parameters:
+    ///     - engine: The Agora RTC engine kit object.
+    ///     - uid: the uid of the remote user
+    ///     - streamId: the stream's id
+    ///     - data: the data
     open func rtcEngine(_ engine: AgoraRtcEngineKit, receiveStreamMessageFromUid uid: UInt, streamId: Int, data: Data) {
-        // print("[DEBUG] receiveStreamMessageFromUid:\(uid) ")
         do {
-            //            let stt = try Agora_SpeechToText_Text(serializedBytes: data)
-            //            var words : String = ""
-            //            var isFinal : Bool = false
-            //            for word in stt.words {
-            //                words += word.text;
-            //                if (word.isFinal) {
-            //                    isFinal = true
-            //                }
-            //            }
             if let str = String(data: data, encoding: .utf8) {
                 print("Successfully decoded: \(str) uid:\(uid)")
             }
@@ -416,12 +430,13 @@ extension AgoraManager: AgoraAudioFrameDelegate {
             let sampleArray = mapBufferToFloatArray(buffer: buffer, bufferSize: bufferBytes)
             let normalizedSamples = normalizeFrequencies(frequencies: sampleArray)
             let energy = sqrt(normalizedSamples.reduce(0) { $0 + $1 * $1 })
-            if (energy > 28) {
-                print("energy = \(energy)")
-                printFloat(floatArray: sampleArray, total: 32)
-                print("------------------------------")
-                printFloat(floatArray: normalizedSamples, total: 32)
-            }
+// Some code good for debugging
+//            if (energy > 28) {
+//                print("energy = \(energy)")
+//                printFloat(floatArray: sampleArray, total: 32)
+//                print("------------------------------")
+//                printFloat(floatArray: normalizedSamples, total: 32)
+//            }
             Task {
                 await MainActor.run {
                     self.soundSamples[currentSample] = energy

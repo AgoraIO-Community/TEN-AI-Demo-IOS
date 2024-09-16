@@ -8,7 +8,9 @@
 import Foundation
 import SwiftUI
 
+/// App configuration model that takes JSON text as input
 public struct AppConfig: Codable {
+    /// instance access
     static var shared: AppConfig = {
         guard let fileUrl = Bundle.main.url(forResource: "config", withExtension: "json"),
               let jsonData  = try? Data(contentsOf: fileUrl) else { fatalError() }
@@ -26,6 +28,7 @@ public struct AppConfig: Codable {
         return obj
     }()
 
+    ///
     var remoteStreamId: UInt
     var agentUid : UInt     // expected Agent UID
     var agoraAsrLanguage: String

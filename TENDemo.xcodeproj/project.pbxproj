@@ -14,7 +14,6 @@
 		36E753282C9521D70027E5EA /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 36E753272C9521D70027E5EA /* README.md */; };
 		36F06AF82C6C37BC002FE004 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F06AF72C6C37BC002FE004 /* NetworkManager.swift */; };
 		36F06AFA2C6C391B002FE004 /* UtilFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F06AF92C6C391B002FE004 /* UtilFunctions.swift */; };
-		36F06AFC2C6C3F64002FE004 /* UtilTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F06AFB2C6C3F64002FE004 /* UtilTestView.swift */; };
 		5C32D55B2C6591430054DCD7 /* TENDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32D55A2C6591430054DCD7 /* TENDemoApp.swift */; };
 		5C32D55D2C6591430054DCD7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32D55C2C6591430054DCD7 /* ContentView.swift */; };
 		5C32D55F2C6591460054DCD7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C32D55E2C6591460054DCD7 /* Assets.xcassets */; };
@@ -59,7 +58,6 @@
 		36E753272C9521D70027E5EA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		36F06AF72C6C37BC002FE004 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		36F06AF92C6C391B002FE004 /* UtilFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilFunctions.swift; sourceTree = "<group>"; };
-		36F06AFB2C6C3F64002FE004 /* UtilTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilTestView.swift; sourceTree = "<group>"; };
 		5C32D5572C6591430054DCD7 /* TENDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TENDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C32D55A2C6591430054DCD7 /* TENDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TENDemoApp.swift; sourceTree = "<group>"; };
 		5C32D55C2C6591430054DCD7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -122,7 +120,6 @@
 				5C32D5AB2C66D72D0054DCD7 /* ChatView.swift */,
 				5C32D5B92C6705370054DCD7 /* PlaceHolderUserView.swift */,
 				365EAAAF2C768A97002039E3 /* TranscriptionView.swift */,
-				36F06AFB2C6C3F64002FE004 /* UtilTestView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -305,7 +302,6 @@
 				365EAAA72C759224002039E3 /* ServerNetworkingModel.swift in Sources */,
 				5C32D55D2C6591430054DCD7 /* ContentView.swift in Sources */,
 				5C32D5702C6592480054DCD7 /* AgoraVideoCanvasView.swift in Sources */,
-				36F06AFC2C6C3F64002FE004 /* UtilTestView.swift in Sources */,
 				365EAAB02C768A97002039E3 /* TranscriptionView.swift in Sources */,
 				365EAAB22C76A61F002039E3 /* StreamTextProcessor.swift in Sources */,
 				5C32D5AC2C66D72D0054DCD7 /* ChatView.swift in Sources */,

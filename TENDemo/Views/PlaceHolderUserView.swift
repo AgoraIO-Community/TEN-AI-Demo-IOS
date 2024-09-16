@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-///
+let PlaceHolderIcon = "agora-icon-logo"
+
+/// A view that shows an icon and the UID
 ///
 struct PlaceHolderUserView: View {
     let uid: UInt
@@ -17,7 +19,7 @@ struct PlaceHolderUserView: View {
     }
     var body: some View {
         ZStack(alignment: .center) {
-            Image("agora-icon-logo").resizable().aspectRatio(contentMode: .fit)
+            Image(PlaceHolderIcon).resizable().aspectRatio(contentMode: .fit)
             VStack {
                 Text("UID" + String(uid))
                     .font(.callout)

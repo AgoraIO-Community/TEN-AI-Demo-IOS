@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// main display when opening the app with title, description, text input for a channel name and Join button.
+/// 
 struct ContentView: View {
     /// The user inputted `channelId` string.
     @State var channelId: String = AppConfig.shared.channel
