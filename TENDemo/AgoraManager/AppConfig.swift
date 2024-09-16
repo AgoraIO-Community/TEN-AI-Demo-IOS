@@ -29,7 +29,6 @@ public struct AppConfig: Codable {
     }()
 
     ///
-    var localUid: UInt      // local user's UID
     var agentUid : UInt     // expected Agent UID
     var agoraAsrLanguage: String  // Automatic Speech Recognition language
     var openaiProxyUrl: String?    // proxy setting for OpenAI, optional

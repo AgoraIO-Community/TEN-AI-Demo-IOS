@@ -13,14 +13,14 @@ open class NetworkManager {
     ///    Request the server to generate a token based on channel and uid.
     ///  The caller should handle the exception from this networking action.
     /// - Returns: rtc token string
-    static func ApiRequestToken() async throws -> String {
+    static func ApiRequestToken(uid : UInt) async throws -> String {
         // Get the shared AppConfig instance
         let config = AppConfig.shared
         
         // Create an AgoraRTCTokenRequest object with a unique request ID, channel name, and user ID
         let data = AgoraRTCTokenRequest(requestId: genUUID(),
                                         channelName: config.channel,
-                                        uid: config.localUid)
+                                        uid: uid)
         
         // Construct the API endpoint URL
         let endpoint = config.serverBaseURL + "/token/generate"
@@ -37,7 +37,7 @@ open class NetworkManager {
     ///
     /// - Throws: An error if the request fails.
     /// - Returns: The data returned by the server.
-    static func ApiRequestStartService() async throws -> Data {
+    static func ApiRequestStartService(uid : UInt) async throws -> Data {
         // Get the shared AppConfig instance
         let config = AppConfig.shared
         
@@ -54,7 +54,7 @@ open class NetworkManager {
         let data = ServiceStartRequest(requestId: genUUID(),
                                        channelName: config.channel,
                                        openaiProxyUrl: config.openaiProxyUrl,
-                                       remoteStreamId: config.localUid,
+                                       remoteStreamId: uid,
                                        graphName : "camera.va.openai.azure",
                                        voiceType: config.voiceType.description,
                                        properties: startProperties
