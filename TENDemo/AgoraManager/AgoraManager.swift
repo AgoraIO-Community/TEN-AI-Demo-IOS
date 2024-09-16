@@ -254,7 +254,7 @@ extension AgoraManager {
                 return -1;
             }
         }
-        let uid = AppConfig.shared.remoteStreamId
+        let uid = AppConfig.shared.localUid
         var status : Int32 = 0
         switch AppConfig.shared.product {
         case .rtc:

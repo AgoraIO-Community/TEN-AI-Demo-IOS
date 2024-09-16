@@ -20,7 +20,7 @@ open class NetworkManager {
         // Create an AgoraRTCTokenRequest object with a unique request ID, channel name, and user ID
         let data = AgoraRTCTokenRequest(requestId: genUUID(),
                                         channelName: config.channel,
-                                        uid: config.remoteStreamId)
+                                        uid: config.localUid)
         
         // Construct the API endpoint URL
         let endpoint = config.serverBaseURL + "/token/generate"
@@ -54,7 +54,7 @@ open class NetworkManager {
         let data = ServiceStartRequest(requestId: genUUID(),
                                        channelName: config.channel,
                                        openaiProxyUrl: config.openaiProxyUrl,
-                                       remoteStreamId: config.remoteStreamId,
+                                       remoteStreamId: config.localUid,
                                        graphName : "camera.va.openai.azure",
                                        voiceType: config.voiceType.description,
                                        properties: startProperties

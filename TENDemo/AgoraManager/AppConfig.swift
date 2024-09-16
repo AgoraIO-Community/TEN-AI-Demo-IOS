@@ -29,13 +29,12 @@ public struct AppConfig: Codable {
     }()
 
     ///
-    var remoteStreamId: UInt
+    var localUid: UInt      // local user's UID
     var agentUid : UInt     // expected Agent UID
-    var agoraAsrLanguage: String
-    var openaiProxyUrl: String?
-    var voiceType: VoiceType
+    var agoraAsrLanguage: String  // Automatic Speech Recognition language
+    var openaiProxyUrl: String?    // proxy setting for OpenAI, optional
+    var voiceType: VoiceType  // the voice used by the Agent
 
-    var uid: UInt
     // APP ID from https://console.agora.io
     var appId: String
     /// Channel prefil text to join
