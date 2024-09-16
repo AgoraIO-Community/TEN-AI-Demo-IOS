@@ -16,19 +16,25 @@ This app is powered by the technology of Realtime Communication, Realtime Transc
 - LLM Support (e.g. OpenAI API key)
     
 ## Setups
+### TEN Agent Server
+First you should have gotten the TEN Agent working in your environment.  The playground part is optional and it can be stopped for the test for this application.   You will just need the Server running.
+![docker](https://github.com/user-attachments/assets/606c6e75-c95c-4f8b-bea7-f688031ea745)
 
+### Build the iOS App
 1.  Clone this GitHub project.
 2.  Open the project with Xcode and import the Agora SDK plugin. The project includes the Agora Video SDK as a dependency package. Once Xcode loads the project, the package download should start automatically and finish in a few minutes.
 3.  Enter your AppID in the Config file. An AppID with token security enabled is required. Note that this should match your AppID in the .env file of the TEN Agent setup.
 4. Enter your TEN server's URL.  If you are running it locally, it is http://localhost:8080.
-
-![TENDemo_—_config_json](https://github.com/user-attachments/assets/b39f4c9e-af95-49ea-94b0-080d8d66e3db)  
+![TENDemo_—_config_json](https://github.com/user-attachments/assets/b9e93f52-83b3-43ee-a11b-3d0975e252cb)
 
 ## Running the App
-Build to the iOS Device. You may also run the app from the Simulator. However, it is recommended to use headphones in this setup, as the Agent’s conversation could be captured through the computer microphone as input and cause confusion.
+Build to the iOS Device.
+
+You may also run the app from the Simulator. However, it is recommended to use headphones in this setup, as the Agent’s conversation could be captured through the computer microphone as input and cause confusion.
 
 The App will generate a random channel name whenever the home screen is loaded. You may change the text for your channel name. Then press Join to chat with the Agent.
 
+## References
 For reference, it is worthwhile to check out the following resources:
 * [TEN Framework docs](https://doc.theten.ai/)
 * [Agora SDK API references](https://api-ref.agora.io/en/voice-sdk/ios/4.x/documentation/agorartckit).  
@@ -36,4 +42,3 @@ For reference, it is worthwhile to check out the following resources:
 
 ## License
 [MIT License](https://github.com/icywind/TEN-AI-Demo-IOS/blob/main/LICENSE)
-
