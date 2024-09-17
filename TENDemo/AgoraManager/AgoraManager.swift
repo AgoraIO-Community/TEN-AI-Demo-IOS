@@ -8,6 +8,11 @@
 import AgoraRtcKit
 import SwiftUI
 
+enum SessionStatus {
+    case loading;
+    case joined;
+    case left;
+}
 
 /// ``AgoraManager`` is a class that provides an interface to the Agora RTC Engine Kit.
 /// It conforms to the `ObservableObject` and `AgoraRtcEngineDelegate` protocols.
@@ -33,21 +38,27 @@ open class AgoraManager: NSObject, ObservableObject {
     @Published var soundSamples = [Float](repeating: .zero, count: VisualizerSamples)
     @Published var messages: [ChatMessage] = []
     @Published var label: String?
+    @Published var sessionStatus = SessionStatus.loading
 
-    /// Integer ID of the local user.
+    /// whether this client is launch for chatting with AI (one user only)
+    var talkingWithAI = false
+    
+    /// Integer ID of the local user. (required from protocol)
     public var localUserId: UInt = 0
 
     /// A processor that analyzes the text stream and place them in order
     private lazy var streamTextProcessor = StreamTextProcessor(agoraManager: self)
     
-    // MARK: - Agora Engine Functions
     private var engine: AgoraRtcEngineKit?
-    @State private var streamId = 0   /// a handler id for data stream, to be assigned by rtc engine
     
+    @State private var streamId = 0   /// a handler id for data stream, to be assigned by rtc engine
     private var currentSample : Int = 0  /// use for audio sampling
     
+    // MARK: - Agora Engine Functions
     public var agoraEngine: AgoraRtcEngineKit {
-        if let engine { return engine }
+        if (engine != nil) {
+            return engine!
+        }
         let engine = setupEngine()
         self.engine = engine
         return engine
@@ -55,9 +66,12 @@ open class AgoraManager: NSObject, ObservableObject {
 
     open func setupEngine() -> AgoraRtcEngineKit {
         let eng = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
-        if AppConfig.shared.product != .voice {
+        
+        if AppConfig.shared.product != .voice && Settings.shared.cameraOn {
             eng.enableVideo()
-        } else { eng.enableAudio() }
+        } else {
+            eng.enableAudio()
+        }
         eng.setClientRole(role)
         
         let config = AgoraDataStreamConfig()
@@ -207,7 +221,13 @@ open class AgoraManager: NSObject, ObservableObject {
     ) -> Int32 {
         let leaveErr = self.agoraEngine.leaveChannel(leaveChannelBlock)
         self.agoraEngine.stopPreview()
-        defer { if destroyInstance { AgoraRtcEngineKit.destroy() } }
+        defer {
+            if destroyInstance {
+                AgoraRtcEngineKit.destroy()
+                print ("Engine destroyed!")
+                engine = nil
+            }
+        }
         self.allUsers.removeAll()
         return leaveErr
     }
@@ -222,6 +242,7 @@ open class AgoraManager: NSObject, ObservableObject {
     public init(appId: String, role: AgoraClientRole = .audience) {
         self.appId = appId
         self.role = role
+        super.init()
     }
 
     @MainActor
@@ -248,14 +269,16 @@ extension AgoraManager {
         // from now on.
         if (token != nil && token != "") {
             do {
-                token = try await NetworkManager.ApiRequestToken()
+                token = try await NetworkManager.ApiRequestToken(uid:0)
             } catch let error {
                 print("ApiRequestToken:\(error)")
                 return -1;
             }
         }
-        let uid = AppConfig.shared.localUid
+        
+        let uid : UInt = 0
         var status : Int32 = 0
+        
         switch AppConfig.shared.product {
         case .rtc:
             status = await joinVideoCall(channel, token: token, uid: uid)
@@ -268,14 +291,8 @@ extension AgoraManager {
             status = await joinVoiceCall(channel, token: token, uid: uid)
         }
         
-        if(status == 0 && withAI) {
-            do {
-                let _ = try await NetworkManager.ApiRequestStartService()
-            } catch let error {
-                print ("Error: \(error.localizedDescription)")
-                status = -2
-            }
-        }
+        talkingWithAI = withAI
+
         return status
     }
     
@@ -288,7 +305,8 @@ extension AgoraManager {
                 print ("Error: \(error.localizedDescription)")
             }
         }
-        return leaveChannel(leaveChannelBlock: nil, destroyInstance: false)
+        sessionStatus = .left
+        return leaveChannel(leaveChannelBlock: nil, destroyInstance: true)
     }
     
     public func pingSession() -> Void {
@@ -314,10 +332,19 @@ extension AgoraManager: AgoraRtcEngineDelegate {
     ///
     /// If the client's role is `.broadcaster`, this method also adds the broadcaster's
     /// userId (``localUserId``) to the ``allUsers`` set.
+    @MainActor
     open func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
         self.localUserId = uid
         if self.role == .broadcaster {
             self.allUsers.insert(uid)
+        }
+        Task {
+            do {
+                let _ = try await NetworkManager.ApiRequestStartService(uid:self.localUserId)
+                self.sessionStatus = .joined
+            } catch let error {
+                print ("Error: \(error.localizedDescription)")
+            }
         }
     }
 
@@ -406,10 +433,10 @@ extension AgoraManager: AgoraRtcEngineDelegate {
     ///     - data: the data
     open func rtcEngine(_ engine: AgoraRtcEngineKit, receiveStreamMessageFromUid uid: UInt, streamId: Int, data: Data) {
         do {
-            if let str = String(data: data, encoding: .utf8) {
-                print("Successfully decoded: \(str) uid:\(uid)")
-            }
-            
+//            if let str = String(data: data, encoding: .utf8) {
+//                print("Successfully decoded: \(str) uid:\(uid)")
+//            }
+//            
             let stt = try JSONDecoder().decode(STTStreamText.self, from: data)
             let msg = IChatItem(userId: uid, text: stt.text, time: stt.textTS, isFinal: stt.isFinal, isAgent: 0 == stt.streamID)
             streamTextProcessor.addChatItem(item: msg)

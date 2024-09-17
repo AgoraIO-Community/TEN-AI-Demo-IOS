@@ -12,6 +12,7 @@ import SwiftUI
 struct ContentView: View {
     /// The user inputted `channelId` string.
     @State var channelId: String = AppConfig.shared.channel
+    @State private var showingSettings = false
 
     var body: some View {
         NavigationView {
@@ -61,6 +62,18 @@ struct ContentView: View {
                     .onAppear {
                         self.channelId = getRandomChannel()
                     }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showingSettings = true
+                    }) {
+                        Image(systemName: "gearshape")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingSettings) {
+                SettingsView(isPresented: $showingSettings)
             }
         }
     }

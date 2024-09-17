@@ -22,6 +22,7 @@ struct ChatView: View {
     }
     
     /// Agora Manager holdes the user information that are leverage to show in a view
+    ///  In the MVVM paradigm, the AgoraManager serves as the ViewModel
     @ObservedObject public var agoraManager = AgoraManager(appId: AppConfig.shared.appId, role: .broadcaster)
 
     public var body: some View {
@@ -32,9 +33,10 @@ struct ChatView: View {
                 Text(AppConfig.shared.channel).foregroundColor(.blue).font(.title)
             }.padding(20)
             
-            // structuring a 2 columns/multi-row grid view
-            let columns = Array(repeating: GridItem(.flexible()), count: 2)
-            LazyVGrid(columns: columns, spacing: 20) {
+            if (agoraManager.sessionStatus == .joined) {
+                // structuring a 2 columns/multi-row grid view
+                let columns = Array(repeating: GridItem(.flexible()), count: 2)
+                LazyVGrid(columns: columns, spacing: 20) {
                     // Show the video feeds for each participant.
                     ForEach(Array(agoraManager.allUsers), id: \.self) { uid in
                         Group {
@@ -57,20 +59,27 @@ struct ChatView: View {
                             }
                         }
                     }
-            }//.padding(20)
-            
-            // The transcription of the Agent and local user
-            TranscriptionView(
-                messages: agoraManager.messages,
+                }//.padding(20)
+                
+                // The transcription of the Agent and local user
+                TranscriptionView(
+                    messages: agoraManager.messages,
                     speakerA: "Agent",
                     speakerB: "You"
-            ).scaledToFit()
-            ToastView(message: $agoraManager.label)
-            .onReceive(timer) { time in
-                if (!_preview) {
-                    // A Ping message is required to keep the connection alive
-                    agoraManager.pingSession()
-                }
+                ).scaledToFit()
+                ToastView(message: $agoraManager.label)
+                    .onReceive(timer) { time in
+                        if (!_preview) {
+                            // A Ping message is required to keep the connection alive
+                            agoraManager.pingSession()
+                        }
+                    }
+            } // .join
+            else {
+                Spacer()
+                ProgressView("Loading...")
+                    .progressViewStyle(CircularProgressViewStyle())
+                Spacer()
             }
         }.onAppear { // Note this onAppear is an async extension
             if (!_preview) {
@@ -83,7 +92,7 @@ struct ChatView: View {
             if (!_preview) {
                 agoraManager.stopSession()
             }
-        }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+        }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
            
     }
 }

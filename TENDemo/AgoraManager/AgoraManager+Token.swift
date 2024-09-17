@@ -3,6 +3,7 @@
 //  Docs-Examples
 //
 //  Created by Max Cobb on 23/08/2023.
+//  Tailored by Rick Cheng on 8/13/24.
 //
 
 import Foundation
@@ -83,7 +84,7 @@ public extension AgoraManager {
     ) {
         Task {
             do {
-                let newToken = try await NetworkManager.ApiRequestToken()
+                let newToken = try await NetworkManager.ApiRequestToken(uid:localUserId)
                 print("token = \(token) renewed = \(newToken)")
                 self.agoraEngine.renewToken(newToken)
             } catch let error {
