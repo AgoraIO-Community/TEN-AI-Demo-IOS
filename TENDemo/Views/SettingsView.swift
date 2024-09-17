@@ -10,6 +10,15 @@ import SwiftUI
 struct Settings {
     static var shared : Settings = Settings()
     var cameraOn : Bool = true
+    
+    func getVoiceName(voiceType: VoiceType ) -> String {
+        switch(voiceType) {
+        case .male:
+            return "en-US-BrianNeural"
+        case .female:
+            return "en-US-JaneNeural"
+        }
+    }
 }
 
 /// The view provides user with options and info to use this App

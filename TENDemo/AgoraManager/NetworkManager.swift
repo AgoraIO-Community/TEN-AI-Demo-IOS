@@ -40,6 +40,7 @@ open class NetworkManager {
     static func ApiRequestStartService(uid : UInt) async throws -> Data {
         // Get the shared AppConfig instance
         let config = AppConfig.shared
+        let voice = Settings.shared.getVoiceName(voiceType:config.voiceType)
         
         // Create a ServerStartProperties object with configuration for Agora RTC, OpenAI ChatGPT, and Azure TTS
         let startProperties = ServerStartProperties(agoraRtc: ["agora_asr_language": "en-US"],
@@ -48,7 +49,7 @@ open class NetworkManager {
                                                         "greeting": "TEN agent connected. Happy to chat with you today.",
                                                         "checking_vision_text_items": "[\"Let me take a look...\",\"Let me check your camera...\",\"Please wait for a second...\"]"
                                                     ],
-                                                    azureTTS: ["azure_synthesis_voice_name": "en-US-BrianNeural"])
+                                                    azureTTS: ["azure_synthesis_voice_name": voice])
         
         // Create a ServiceStartRequest object with request ID, channel name, OpenAI proxy URL, remote stream ID, graph name, voice type, and start properties
         let data = ServiceStartRequest(requestId: genUUID(),
