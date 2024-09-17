@@ -25,7 +25,7 @@ struct Settings {
 struct SettingsView: View {
     @Binding var isPresented: Bool
     
-    @State var VoiceType : String = "Male Voice"
+    @State var voiceTypeLabel : String = AppConfig.shared.voiceType.description.capitalized + " Voice"
     @State var cameraOn: Bool = Settings.shared.cameraOn
     @State var voiceOption = AppConfig.shared.voiceType == .male  // true = male, false = female
 
@@ -33,14 +33,14 @@ struct SettingsView: View {
         NavigationView {
             Form {
                 Section(header: Text("Agent")) {
-                    Toggle(VoiceType, isOn: $voiceOption)
+                    Toggle(voiceTypeLabel, isOn: $voiceOption)
                     .onChange(of: voiceOption) { newValue in
                         if newValue {
                             AppConfig.shared.voiceType = .male
                         } else {
                             AppConfig.shared.voiceType = .female
                         }
-                        VoiceType = voiceOption ? "Male Voice" : "Female Voice"
+                        voiceTypeLabel = getVoiceType()
                     }
                 }
                 Section(header: Text("RTC")) {
@@ -56,6 +56,10 @@ struct SettingsView: View {
                 isPresented = false
             })
         }
+    }
+    
+    func getVoiceType() -> String {
+        return AppConfig.shared.voiceType.description.capitalized + " Voice"
     }
 }
 
