@@ -56,7 +56,9 @@ open class AgoraManager: NSObject, ObservableObject {
     
     // MARK: - Agora Engine Functions
     public var agoraEngine: AgoraRtcEngineKit {
-        if let engine { return engine }
+        if (engine != nil) {
+            return engine!
+        }
         let engine = setupEngine()
         self.engine = engine
         return engine
@@ -64,9 +66,12 @@ open class AgoraManager: NSObject, ObservableObject {
 
     open func setupEngine() -> AgoraRtcEngineKit {
         let eng = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
-        if AppConfig.shared.product != .voice {
+        
+        if AppConfig.shared.product != .voice && Settings.shared.cameraOn {
             eng.enableVideo()
-        } else { eng.enableAudio() }
+        } else {
+            eng.enableAudio()
+        }
         eng.setClientRole(role)
         
         let config = AgoraDataStreamConfig()
@@ -216,7 +221,13 @@ open class AgoraManager: NSObject, ObservableObject {
     ) -> Int32 {
         let leaveErr = self.agoraEngine.leaveChannel(leaveChannelBlock)
         self.agoraEngine.stopPreview()
-        defer { if destroyInstance { AgoraRtcEngineKit.destroy() } }
+        defer {
+            if destroyInstance {
+                AgoraRtcEngineKit.destroy()
+                print ("Engine destroyed!")
+                engine = nil
+            }
+        }
         self.allUsers.removeAll()
         return leaveErr
     }
@@ -231,6 +242,7 @@ open class AgoraManager: NSObject, ObservableObject {
     public init(appId: String, role: AgoraClientRole = .audience) {
         self.appId = appId
         self.role = role
+        super.init()
     }
 
     @MainActor
@@ -294,7 +306,7 @@ extension AgoraManager {
             }
         }
         sessionStatus = .left
-        return leaveChannel(leaveChannelBlock: nil, destroyInstance: false)
+        return leaveChannel(leaveChannelBlock: nil, destroyInstance: true)
     }
     
     public func pingSession() -> Void {
