@@ -232,6 +232,9 @@ open class AgoraManager: NSObject, ObservableObject {
         return leaveErr
     }
 
+    func switchCamera() {
+        self.agoraEngine.switchCamera()
+    }
     // MARK: - Setup
 
     /// Initializes a new instance of `AgoraManager` with the specified app ID and client role.
