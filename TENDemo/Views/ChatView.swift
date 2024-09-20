@@ -21,17 +21,33 @@ struct ChatView: View {
         }
     }
     
+    @State var useFrontCamera : Bool = true
     /// Agora Manager holdes the user information that are leverage to show in a view
     ///  In the MVVM paradigm, the AgoraManager serves as the ViewModel
     @ObservedObject public var agoraManager = AgoraManager(appId: AppConfig.shared.appId, role: .broadcaster)
 
-    public var body: some View {
+    var body: some View {
         VStack {
+
             // Title with channel info
             HStack {
                 Text("Channel:").foregroundColor(.black).font(.title)
                 Text(AppConfig.shared.channel).foregroundColor(.blue).font(.title)
             }.padding(20)
+                .toolbar {
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                        Button(action: {
+                            print("Switching Camera")
+                            agoraManager.switchCamera()
+                        }) {
+                            
+                            Image("camera-switch-front-back-blue")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit) // or .fill
+                                .frame(width: 40, height: 40)
+                        }
+                    }
+                }
             
             if (agoraManager.sessionStatus == .joined) {
                 // structuring a 2 columns/multi-row grid view
@@ -45,6 +61,11 @@ struct ChatView: View {
                                     // this is a component that show streaming video feeds
                                     AgoraVideoCanvasView(manager: agoraManager, uid: uid)
                                         .aspectRatio(contentMode: .fit).cornerRadius(10)
+                                        .onTapGesture(count: 2) {
+                                            // Your functional logic here
+                                            print("Text double-tapped!")
+                                        }
+
                                 } else {
                                     // a placeholder; it will show the uid as the distinguisher
                                     PlaceHolderUserView(user: uid).aspectRatio(contentMode: .fit).cornerRadius(10)
