@@ -13,7 +13,8 @@ struct ContentView: View {
     /// The user inputted `channelId` string.
     @State var channelId: String = AppConfig.shared.channel
     @State private var showingSettings = false
-
+    @State private var isOn = AppConfig.shared.voiceType == .female
+    
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
@@ -46,7 +47,21 @@ struct ContentView: View {
                         Spacer()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-
+                    HStack {
+                        Text("Agent Voice:")
+                        Text("Male")
+                        Toggle("", isOn: $isOn)
+                            .onChange(of: isOn) { newValue in
+                                if (newValue) {
+                                    AppConfig.shared.voiceType = .female
+                                } else {
+                                    AppConfig.shared.voiceType = .male
+                                }
+                            } .labelsHidden()
+                        Text("Female")
+                    }
+                    Spacer()
+                    .padding()
                     VStack {
                         HStack {
                             Text("Agora IO 2024")
