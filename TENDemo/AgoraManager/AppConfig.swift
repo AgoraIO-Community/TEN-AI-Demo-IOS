@@ -22,16 +22,12 @@ public struct AppConfig: Codable {
         if (obj.rtcToken ?? "").isEmpty {
             obj.rtcToken = nil
         }
-        if (obj.openaiProxyUrl ?? "").isEmpty {
-            obj.openaiProxyUrl = nil
-        }
         return obj
     }()
 
     ///
     var agentUid : UInt     // expected Agent UID
     var agoraAsrLanguage: String  // Automatic Speech Recognition language
-    var openaiProxyUrl: String?    // proxy setting for OpenAI, optional
     var voiceType: VoiceType  // the voice used by the Agent
 
     // APP ID from https://console.agora.io

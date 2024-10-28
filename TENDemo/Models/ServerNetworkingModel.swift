@@ -50,8 +50,6 @@ struct ServiceStartRequest: Codable {
     let requestId: String
     /// The name of the Agora channel.
     let channelName: String
-    /// The URL for the OpenAI proxy.
-    let openaiProxyUrl: String?
     /// The remote stream ID.
     let remoteStreamId: UInt
     /// The name of the graph.
@@ -65,7 +63,6 @@ struct ServiceStartRequest: Codable {
     enum CodingKeys: String, CodingKey {
         case requestId = "request_id"
         case channelName = "channel_name"
-        case openaiProxyUrl = "openai_proxy_url"
         case remoteStreamId = "remote_stream_id"
         case graphName = "graph_name"
         case voiceType = "voice_type"
