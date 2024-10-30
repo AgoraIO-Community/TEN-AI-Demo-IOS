@@ -74,11 +74,11 @@ open class AgoraManager: NSObject, ObservableObject {
         }
         eng.setClientRole(role)
         
-        let config = AgoraDataStreamConfig()
-        let result = eng.createDataStream(&streamId, config: config)
-        if result != 0 {
-            print("ERROR, StreamCreate FAILED!")
-        }
+//        let config = AgoraDataStreamConfig()
+//        let result = eng.createDataStream(&streamId, config: config)
+//        if result != 0 {
+//            print("ERROR, StreamCreate FAILED!")
+//        }
         ///  Enable the capturing of raw audio frame for individual remote users
         eng.setAudioFrameDelegate(self)
         eng.setPlaybackAudioFrameBeforeMixingParametersWithSampleRate(44100, channel: 1)
@@ -436,10 +436,6 @@ extension AgoraManager: AgoraRtcEngineDelegate {
     ///     - data: the data
     open func rtcEngine(_ engine: AgoraRtcEngineKit, receiveStreamMessageFromUid uid: UInt, streamId: Int, data: Data) {
         do {
-//            if let str = String(data: data, encoding: .utf8) {
-//                print("Successfully decoded: \(str) uid:\(uid)")
-//            }
-//            
             let stt = try JSONDecoder().decode(STTStreamText.self, from: data)
             let msg = IChatItem(userId: uid, text: stt.text, time: stt.textTS, isFinal: stt.isFinal, isAgent: 0 == stt.streamID)
             streamTextProcessor.addChatItem(item: msg)
@@ -460,13 +456,6 @@ extension AgoraManager: AgoraAudioFrameDelegate {
             let sampleArray = mapBufferToFloatArray(buffer: buffer, bufferSize: bufferBytes)
             let normalizedSamples = normalizeFrequencies(frequencies: sampleArray)
             let energy = sqrt(normalizedSamples.reduce(0) { $0 + $1 * $1 })
-// Some code good for debugging
-//            if (energy > 28) {
-//                print("energy = \(energy)")
-//                printFloat(floatArray: sampleArray, total: 32)
-//                print("------------------------------")
-//                printFloat(floatArray: normalizedSamples, total: 32)
-//            }
             Task {
                 await MainActor.run {
                     self.soundSamples[currentSample] = energy

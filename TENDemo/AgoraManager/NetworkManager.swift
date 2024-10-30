@@ -54,7 +54,6 @@ open class NetworkManager {
         // Create a ServiceStartRequest object with request ID, channel name, OpenAI proxy URL, remote stream ID, graph name, voice type, and start properties
         let data = ServiceStartRequest(requestId: genUUID(),
                                        channelName: config.channel,
-                                       openaiProxyUrl: config.openaiProxyUrl,
                                        remoteStreamId: uid,
                                        graphName : "camera.va.openai.azure",
                                        voiceType: config.voiceType.description,

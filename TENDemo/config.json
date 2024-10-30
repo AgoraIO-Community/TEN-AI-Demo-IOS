@@ -5,7 +5,6 @@
     "rtcToken": "true",
     "product": "ils",
     "agoraAsrLanguage": "en-US",
-    "openaiProxyUrl": "",
     "voiceType": "male",
     "serverBaseURL":""
 }
