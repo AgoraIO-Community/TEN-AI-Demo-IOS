@@ -11,6 +11,7 @@
 		365EAAB02C768A97002039E3 /* TranscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365EAAAF2C768A97002039E3 /* TranscriptionView.swift */; };
 		365EAAB22C76A61F002039E3 /* StreamTextProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365EAAB12C76A61F002039E3 /* StreamTextProcessor.swift */; };
 		36BADB812CD2C3CD00B89787 /* GUIDE.md in Resources */ = {isa = PBXBuildFile; fileRef = 36BADB7F2CD2C3CD00B89787 /* GUIDE.md */; };
+		36BADB832CD2DB5D00B89787 /* STTStreamDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BADB822CD2DB5D00B89787 /* STTStreamDecoder.swift */; };
 		36E753032C7921450027E5EA /* SoundVisualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E753022C7921450027E5EA /* SoundVisualizer.swift */; };
 		36E753282C9521D70027E5EA /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 36E753272C9521D70027E5EA /* README.md */; };
 		36E7532C2C98F8AE0027E5EA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E7532B2C98F8AD0027E5EA /* SettingsView.swift */; };
@@ -57,6 +58,7 @@
 		365EAAAF2C768A97002039E3 /* TranscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionView.swift; sourceTree = "<group>"; };
 		365EAAB12C76A61F002039E3 /* StreamTextProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamTextProcessor.swift; sourceTree = "<group>"; };
 		36BADB7F2CD2C3CD00B89787 /* GUIDE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = GUIDE.md; sourceTree = "<group>"; };
+		36BADB822CD2DB5D00B89787 /* STTStreamDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTStreamDecoder.swift; sourceTree = "<group>"; };
 		36E753022C7921450027E5EA /* SoundVisualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundVisualizer.swift; sourceTree = "<group>"; };
 		36E753272C9521D70027E5EA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		36E7532B2C98F8AD0027E5EA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				365EAAA62C759224002039E3 /* ServerNetworkingModel.swift */,
+				36BADB822CD2DB5D00B89787 /* STTStreamDecoder.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				5C32D5BA2C6705370054DCD7 /* PlaceHolderUserView.swift in Sources */,
 				5C32D55B2C6591430054DCD7 /* TENDemoApp.swift in Sources */,
 				36E753032C7921450027E5EA /* SoundVisualizer.swift in Sources */,
+				36BADB832CD2DB5D00B89787 /* STTStreamDecoder.swift in Sources */,
 				36E7532C2C98F8AE0027E5EA /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

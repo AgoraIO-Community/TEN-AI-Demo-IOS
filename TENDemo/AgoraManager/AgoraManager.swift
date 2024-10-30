@@ -40,6 +40,8 @@ open class AgoraManager: NSObject, ObservableObject {
     @Published var label: String?
     @Published var sessionStatus = SessionStatus.loading
 
+    let sttStreamDecoder = STTStreamDecoder()
+    
     /// whether this client is launch for chatting with AI (one user only)
     var talkingWithAI = false
     
@@ -436,7 +438,7 @@ extension AgoraManager: AgoraRtcEngineDelegate {
     ///     - data: the data
     open func rtcEngine(_ engine: AgoraRtcEngineKit, receiveStreamMessageFromUid uid: UInt, streamId: Int, data: Data) {
         do {
-            let stt = try JSONDecoder().decode(STTStreamText.self, from: data)
+            let stt = try sttStreamDecoder.parseStream(data: data)
             let msg = IChatItem(userId: uid, text: stt.text, time: stt.textTS, isFinal: stt.isFinal, isAgent: 0 == stt.streamID)
             streamTextProcessor.addChatItem(item: msg)
         } catch let error {
