@@ -10,6 +10,7 @@
 		365EAAA72C759224002039E3 /* ServerNetworkingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365EAAA62C759224002039E3 /* ServerNetworkingModel.swift */; };
 		365EAAB02C768A97002039E3 /* TranscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365EAAAF2C768A97002039E3 /* TranscriptionView.swift */; };
 		365EAAB22C76A61F002039E3 /* StreamTextProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365EAAB12C76A61F002039E3 /* StreamTextProcessor.swift */; };
+		36BADB812CD2C3CD00B89787 /* GUIDE.md in Resources */ = {isa = PBXBuildFile; fileRef = 36BADB7F2CD2C3CD00B89787 /* GUIDE.md */; };
 		36E753032C7921450027E5EA /* SoundVisualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E753022C7921450027E5EA /* SoundVisualizer.swift */; };
 		36E753282C9521D70027E5EA /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 36E753272C9521D70027E5EA /* README.md */; };
 		36E7532C2C98F8AE0027E5EA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E7532B2C98F8AD0027E5EA /* SettingsView.swift */; };
@@ -55,6 +56,7 @@
 		365EAAA62C759224002039E3 /* ServerNetworkingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerNetworkingModel.swift; sourceTree = "<group>"; };
 		365EAAAF2C768A97002039E3 /* TranscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionView.swift; sourceTree = "<group>"; };
 		365EAAB12C76A61F002039E3 /* StreamTextProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamTextProcessor.swift; sourceTree = "<group>"; };
+		36BADB7F2CD2C3CD00B89787 /* GUIDE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = GUIDE.md; sourceTree = "<group>"; };
 		36E753022C7921450027E5EA /* SoundVisualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundVisualizer.swift; sourceTree = "<group>"; };
 		36E753272C9521D70027E5EA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		36E7532B2C98F8AD0027E5EA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -116,6 +118,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		36BADB802CD2C3CD00B89787 /* docs */ = {
+			isa = PBXGroup;
+			children = (
+				36BADB7F2CD2C3CD00B89787 /* GUIDE.md */,
+			);
+			path = docs;
+			sourceTree = "<group>";
+		};
 		36E753262C926CDA0027E5EA /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				36E753272C9521D70027E5EA /* README.md */,
+				36BADB802CD2C3CD00B89787 /* docs */,
 				5C32D5592C6591430054DCD7 /* TENDemo */,
 				5C32D5582C6591430054DCD7 /* Products */,
 			);
@@ -286,6 +297,7 @@
 			files = (
 				5C32D5622C6591460054DCD7 /* Preview Assets.xcassets in Resources */,
 				5C32D5722C6592800054DCD7 /* config.json in Resources */,
+				36BADB812CD2C3CD00B89787 /* GUIDE.md in Resources */,
 				36E753282C9521D70027E5EA /* README.md in Resources */,
 				5C32D55F2C6591460054DCD7 /* Assets.xcassets in Resources */,
 			);

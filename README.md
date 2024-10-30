@@ -4,6 +4,8 @@
 
 This app is powered by the technology of Realtime Communication, Realtime Transcription, a Large Language Model (LLM), and Text to Speech extensions. The TEN Framework makes the workflow super easy! The iOS Demo resembles the web demo and acts as the mobile frontend to the AI Agent. You may ask the Agent any general question.
 
+For more details of the project, view [the guide](docs/GUIDE.md).
+
 ![TENagentRun](https://github.com/user-attachments/assets/1e7136e0-ffef-48fd-9c29-6efa797e33d1)
 ## Prerequisites:
 - Agora Developer account
