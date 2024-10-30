@@ -206,7 +206,7 @@ The TEN agent uses the data stream from the RTC channel for the transcription of
 ```swift
 open func rtcEngine(_ engine: AgoraRtcEngineKit, receiveStreamMessageFromUid uid: UInt, streamId: Int, data: Data) {
     do {
-        let stt = try JSONDecoder().decode(STTStreamText.self, from: data)
+        let stt = try sttStreamDecoder.parseStream(data: data)
         let msg = IChatItem(userId: uid, text: stt.text, time: stt.textTS, isFinal: stt.isFinal, isAgent: 0 == stt.streamID)
         streamTextProcessor.addChatItem(item: msg)
     } catch let error {
@@ -226,6 +226,12 @@ The transcript is separated into chunks and sent into sequential messages. Each 
 }  
 ```  
 The struct is translated into a view model, IChatItem, that the stream text processor uses to make the transcript ready for display as a whole.
+Note in version 0.5.0, the data stream message is wrapped in a format of 
+```
+<id>|<idx>|<total>|<content part>
+```
+where the content part is a part of a long base64 encoded text.  The number of parts is in <total\>, and the <idx\> is the part number.  We use a STTStreamDecoder class to decode the string into STTStreamText struct.
+
 
 **Stream Text Processor**  
 The stream text processor keeps track of the incoming transcript chunks and stores them in a list (sttWords). When addChatItem() is called, the processor processes the message with its time and the isFinal field to determine where to put the message in the list. The final result will update the observed object *messages* in AgoraManager. Later, ChatView uses *messages* to generate the transcription view. It is worth reading the code comments to understand the sorting logic here:  
