@@ -284,11 +284,6 @@ agoraEngine.setPlaybackAudioFrameBeforeMixingParametersWithSampleRate(44100, cha
 2. Add event handler onPlaybackAudioFrame to the AgoraAudioFrameDelegate.  
 
 ```swift
-agoraEngine.setAudioFrameDelegate(self)
-agoraEngine.setPlaybackAudioFrameBeforeMixingParametersWithSampleRate(44100, channel: 1)
-```
-
-```swift
 extension AgoraManager: AgoraAudioFrameDelegate {
     open func onPlaybackAudioFrame(beforeMixing frame: AgoraAudioFrame, channelId: String, uid: UInt) -> Bool {
         /** The buffer of the sample audio data. When the audio frame uses a stereo
