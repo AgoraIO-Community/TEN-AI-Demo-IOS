@@ -267,7 +267,7 @@ struct StreamTextProcessor {
     }
 }
 ```
-** Transcription View**  
+**Transcription View**  
 The transcription view is contained in the ChatView. For now, it is a simple one-to-one chat room design. Speaker A and Speaker B will each take a left side and right side text alignment for the display. When there are more parties involved, an expansion to a more flexible design should be considered.  
   
 ### Sound Visualization  
