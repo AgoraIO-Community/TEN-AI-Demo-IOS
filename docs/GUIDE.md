@@ -322,6 +322,6 @@ The sound visualizer view uses a set of vertical bars to show the strength of au
 Let's review what we discussed in this tutorial. First, we listed the essential frontend-backend networking models. Based on this information, a network manager is created to bridge the communication between the app and the server. Then we implement the voice and video chat using Agora's powerful engine. From the engine, we use two advanced features: data streaming and raw audio frame capturing to show the transcription and the AI agent's voice energy level. A simple voice- and video-enabled AI assistant app is created!
 
 ## Resources  
-* [iOS SDK QuickStart guide] (https://docs.agora.io/en/video-calling/get-started/get-started-sdk)  
+* [iOS SDK QuickStart guide](https://docs.agora.io/en/video-calling/get-started/get-started-sdk)  
 * [AgoraIO iOS API-Examples](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample)  
 * [TEN Agent](https://github.com/TEN-framework/TEN-Agent)
