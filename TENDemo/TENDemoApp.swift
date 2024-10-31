@@ -8,7 +8,7 @@
 import SwiftUI
 
 // The version number basically matches the TEN-Framework
-let _appVersion = "v0.4.1"
+let _appVersion = "v0.5.0"
 
 @main
 struct TENDemoApp: App {

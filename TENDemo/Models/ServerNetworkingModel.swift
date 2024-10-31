@@ -51,22 +51,25 @@ struct ServiceStartRequest: Codable {
     /// The name of the Agora channel.
     let channelName: String
     /// The remote stream ID.
-    let remoteStreamId: UInt
+    let userUID: UInt
     /// The name of the graph.
-    let graphName : String
+    let graphName: String
+    /// The spoken language
+    let language: String
     /// The type of voice.
     let voiceType: String
     /// The properties for starting the service.
-    let properties : ServerStartProperties
+    let properties: ServerStartProperties
 
     /// Coding keys for the request.
     enum CodingKeys: String, CodingKey {
         case requestId = "request_id"
         case channelName = "channel_name"
-        case remoteStreamId = "remote_stream_id"
+        case userUID = "user_uid"
         case graphName = "graph_name"
         case voiceType = "voice_type"
         case properties = "properties"
+        case language
     }
 }
 
@@ -164,3 +167,4 @@ struct STTStreamText: Codable {
         case textTS = "text_ts"
     }
 }
+
