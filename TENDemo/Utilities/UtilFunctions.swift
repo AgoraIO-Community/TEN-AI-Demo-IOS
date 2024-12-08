@@ -75,6 +75,13 @@ func genUUID() -> String {
     return UUID().uuidString
 }
 
+func decodeBase64(_ base64String: String) -> String? {
+    guard let data = Data(base64Encoded: base64String) else {
+        return nil
+    }
+    return String(data: data, encoding: .utf8)
+}
+
 struct Environment {
     func isRunningOnSimulator() -> Bool {
         #if targetEnvironment(simulator)

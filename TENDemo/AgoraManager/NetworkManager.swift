@@ -54,8 +54,9 @@ open class NetworkManager {
         // Create a ServiceStartRequest object with request ID, channel name, OpenAI proxy URL, remote stream ID, graph name, voice type, and start properties
         let data = ServiceStartRequest(requestId: genUUID(),
                                        channelName: config.channel,
-                                       remoteStreamId: uid,
-                                       graphName : "camera.va.openai.azure",
+                                       userUID: uid,
+                                       graphName : "camera_va_openai_azure",
+                                       language: config.agoraAsrLanguage,
                                        voiceType: config.voiceType.description,
                                        properties: startProperties
         )
@@ -125,6 +126,11 @@ open class NetworkManager {
         
         // Encode the data into JSON format
         let body = try JSONEncoder().encode(data)
+
+        // Convert JSON data to a string
+        if let jsonString = String(data: body, encoding: .utf8) {
+            print(jsonString)
+        }
         
         // Set the request body to the encoded JSON data
         request.httpBody = body
